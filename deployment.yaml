@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lakhan-dig-deployment
+  labels:
+    app: lakhan-dig
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lakhan-dig
+  template:
+    metadata:
+      labels:
+        app: lakhan-dig
+    spec:
+      containers:
+        - name: lakhan-dig
+          image: lakhan-dig:v1
+          ports:
+            - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: lakhan-dig-service
+  labels:
+    app: lakhan-dig
+spec:
+  type: LoadBalancer
+  selector:
+    app: lakhan-dig
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
